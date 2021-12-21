@@ -2,6 +2,8 @@ const chalk = require("chalk");
 const figlet = require("figlet");
 const tasks = require("./tasks");
 const getTotalDeliveryCost = require("./services/calculateDeliveryCost");
+const getAllCouponCodes = require("./services/getAllCouponCodes");
+const addNewCouponCode = require("./services/addNewCouponCode");
 
 //Header ASCII Art
 const headerText = "Courier Service CLI";
@@ -17,7 +19,13 @@ const app = async () => {
     case "getTotalDeliveryCost":
       await getTotalDeliveryCost();
       break;
-    case "Exit":
+    case "getAllCouponCodes":
+      await getAllCouponCodes();
+      break;
+    case "addNewCouponCode":
+      await addNewCouponCode();
+      break;
+    case "exit":
       process.exit(0);
     default:
       break;

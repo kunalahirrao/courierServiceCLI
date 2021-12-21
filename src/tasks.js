@@ -11,7 +11,15 @@ module.exports = {
           {
             name: "Calculate total delivery cost",
             value: "getTotalDeliveryCost",
-          },          
+          },
+          {
+            name: "List of Coupon codes",
+            value: "getAllCouponCodes",
+          },
+          {
+            name: "Add a new discount Coupon",
+            value: "addNewCouponCode",
+          },
           {
             name: "Exit",
             value: "exit",
@@ -27,7 +35,7 @@ module.exports = {
       {
         type: "input",
         name: "baseDeliveryCost",
-        message: "Please Enter the Base Delivery Cost",
+        message: "Enter the Base Delivery Cost",
         validate: (baseCost) => {
           if (baseCost.length && typeof parseInt(baseCost) == "number") {
             return true;
@@ -39,7 +47,7 @@ module.exports = {
       {
         type: "input",
         name: "noOfPackages",
-        message: "Please Enter No of Packages",
+        message: "Enter No of Packages",
         validate: (noOfPackages) => {
           if (
             noOfPackages.length &&
@@ -54,8 +62,8 @@ module.exports = {
     ];
     return inquirer.prompt(basicDetails);
   },
-  askConsignmentDetails: () => {
-    const consignmentQuestions = [
+  askPackageDetails: () => {
+    const packageQuestions = [
       {
         name: "pkgId",
         type: "input",
@@ -76,7 +84,7 @@ module.exports = {
           if (pkgWeight.length && typeof parseInt(pkgWeight) == "number") {
             return true;
           } else {
-            return "Please enter valid package Weight in Kg";
+            return "Please enter package Weight in Kg";
           }
         },
       },
@@ -88,7 +96,7 @@ module.exports = {
           if (distance.length && typeof parseInt(distance) == "number") {
             return true;
           } else {
-            return "Please enter valid distance in Km";
+            return "Please enter distance to Destination in Km";
           }
         },
       },
@@ -98,6 +106,85 @@ module.exports = {
         message: "Enter a Coupon code ",
       },
     ];
-    return inquirer.prompt(consignmentQuestions);
+    return inquirer.prompt(packageQuestions);
+  },
+  askNewCouponDetails: () => {
+    const couponQuestions = [
+      {
+        type: "input",
+        name: "couponCode",
+        message: "Enter the code of the coupon",
+        validate: (couponCode) => {
+          if (couponCode.length) {
+            return true;
+          } else {
+            return "Please Enter the code of the coupon";
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "discount",
+        message: "Enter the discount in %",
+        validate: (discount) => {
+          if (discount.length && typeof parseInt(discount) == "number") {
+            return true;
+          } else {
+            return "Please enter the discount in %";
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "minWeight",
+        message: "Enter the minimum weight of the package in Kg",
+        validate: (minWeight) => {
+          if (minWeight.length && typeof parseInt(minWeight) == "number") {
+            return true;
+          } else {
+            return "Please enter minimum weight of the package in Kg";
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "maxWeight",
+        message: "Enter the maximum weight of the package in Kg",
+        validate: (maxWeight) => {
+          if (maxWeight.length && typeof parseInt(maxWeight) == "number") {
+            return true;
+          } else {
+            return "Please enter maximum weight of the package in Kg";
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "minDistance",
+        message:
+          "Enter the minimum distance to destination of the package in Km",
+        validate: (minDistance) => {
+          if (minDistance.length && typeof parseInt(minDistance) == "number") {
+            return true;
+          } else {
+            return "Please enter the minimum distance to destination of the package in Km";
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "maxDistance",
+        message:
+          "Enter the maximum distance to destination of the package in Km",
+        validate: (maxDistance) => {
+          if (maxDistance.length && typeof parseInt(maxDistance) == "number") {
+            return true;
+          } else {
+            return "Please enter the maximum distance to destination of the package";
+          }
+        },
+      },
+    ];
+    return inquirer.prompt(couponQuestions);
   },
 };

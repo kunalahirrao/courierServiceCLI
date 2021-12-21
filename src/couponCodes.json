@@ -1,18 +1,1 @@
-{
-    "OFR001": {
-      "discount": 20,
-      "distanceRange": { "min": 0, "max": 200 },
-      "weightRange": { "min": 10, "max": 200 }
-    },
-    "OFR002": {
-      "discount": 10,
-      "distanceRange": { "min": 200, "max": 400 },
-      "weightRange": { "min": 200, "max": 250 }
-    },
-    "OFR003": {
-      "discount": 5,
-      "distanceRange": { "min": 400, "max": 600 },
-      "weightRange": { "min": 250, "max": 300 }
-    }
-  }
-  
+{"OFR001":{"discount":20,"distance":{"min":0,"max":200},"weight":{"min":10,"max":200}},"OFR002":{"discount":10,"distance":{"min":200,"max":400},"weight":{"min":200,"max":250}},"OFR003":{"discount":5,"distance":{"min":400,"max":600},"weight":{"min":250,"max":300}},"KUNA10":{"discount":10,"distance":{"min":1000,"max":2000},"weight":{"min":2000,"max":3000}},"KUNA20":{"discount":20,"distance":{"min":10000,"max":20000},"weight":{"min":10000,"max":20000}},"KUNA30":{"discount":30,"distance":{"min":30000,"max":40000},"weight":{"min":30000,"max":40000}}}

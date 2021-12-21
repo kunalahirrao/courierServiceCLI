@@ -1,6 +1,6 @@
 const couponCodes = require("../couponCodes.json");
 
-async function calculateConsignmentPriceAfterDiscount({
+async function calculatePackagePriceAfterDiscount({
   pkgId,
   pkgWeightInKg,
   distanceInKm,
@@ -60,9 +60,9 @@ async function getDiscount(
   pkgWeightInKg
 ) {
   const { min: minWeight, max: maxWeight } =
-    couponCodes[couponCode].weightRange;
+    couponCodes[couponCode].weight;
   const { min: minDistance, max: maxDistance } =
-    couponCodes[couponCode].distanceRange;
+    couponCodes[couponCode].distance;
   const isValidDistance = await isValid(distanceInKm, minDistance, maxDistance);
   const isValidWeight = await isValid(pkgWeightInKg, minWeight, maxWeight);
   if (isValidDistance && isValidWeight) {
@@ -77,4 +77,4 @@ async function isValid(val, min, max) {
   return val >= min && val <= max;
 }
 
-module.exports = calculateConsignmentPriceAfterDiscount;
+module.exports = calculatePackagePriceAfterDiscount;

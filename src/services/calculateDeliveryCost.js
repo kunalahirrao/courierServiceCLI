@@ -1,6 +1,6 @@
 const tasks = require("../tasks");
 const Table = require("cli-table3");
-const getConsignmentPriceAfterDiscount = require("./calculateConsignmentPriceAfterDiscount");
+const calculatePackagePriceAfterDiscount = require("./calculatePackagePriceAfterDiscount");
 const chalk = require("chalk");
 
 const calculateDeliveryCost = async () => {
@@ -14,14 +14,14 @@ const calculateDeliveryCost = async () => {
   });
   for (let id = 1; id <= noOfPackages; id++) {
     let { pkgId, pkgWeightInKg, distanceInKm, couponCode } =
-      await tasks.askConsignmentDetails();
+      await tasks.askPackageDetails();
     // Converting to Integer
     pkgWeightInKg = parseInt(pkgWeightInKg);
     baseDeliveryCost = parseInt(baseDeliveryCost);
     distanceInKm = parseInt(distanceInKm);
     // Coupon code to Upper case and  Short circuit
     couponCode = couponCode && couponCode.toUpperCase();
-    const consignment = await getConsignmentPriceAfterDiscount({
+    const package = await calculatePackagePriceAfterDiscount({
       pkgId,
       pkgWeightInKg,
       distanceInKm,
@@ -31,18 +31,14 @@ const calculateDeliveryCost = async () => {
 
     // For Using console.table
     // table.push({
-    //   pkgId: consignment.pkgId,
-    //   discount: consignment.discount,
-    //   originalPrice: consignment.originalPrice,
+    //   pkgId: package.pkgId,
+    //   discount: package.discount,
+    //   originalPrice: package.originalPrice,
     // });
 
-    table.push([
-      consignment.pkgId,
-      consignment.discount,
-      consignment.originalPrice,
-    ]);
+    table.push([package.pkgId, package.discount, package.originalPrice]);
   }
-  console.log(chalk.yellow("Delivery cost estimation with offer"));
+  console.log(chalk.yellow("Delivery cost estimation with coupon"));
   // For console.table
   //   console.table(
   //     table.map((command) => {
