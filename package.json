@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/index.js"
+    "dev": "nodemon ./src/index.js",
+    "start": "node ./src/index.js"
   },
   "author": "kunal ahirrao",
   "license": "ISC",
@@ -12,8 +13,11 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
+    "chalk": "^4.1.2",
     "chalk-animation": "^1.6.0",
+    "cli-table3": "^0.6.0",
     "figlet": "^1.5.2",
-    "gradient-string": "^2.0.0"
+    "gradient-string": "^2.0.0",
+    "inquirer": "^8.2.0"
   }
 }
