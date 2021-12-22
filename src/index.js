@@ -1,12 +1,13 @@
 const chalk = require("chalk");
 const figlet = require("figlet");
 const tasks = require("./tasks");
-const getTotalDeliveryCost = require("./services/calculateDeliveryCost");
-const getAllCouponCodes = require("./services/getAllCouponCodes");
-const addNewCouponCode = require("./services/addNewCouponCode");
+const getTotalDeliveryCost = require("./libs/calculateDeliveryCost");
+const getDeliveryTimeEstimation = require("./libs/getDeliveryTimeEstimation");
+const getAllCouponCodes = require("./libs/getAllCouponCodes");
+const addNewCouponCode = require("./libs/addNewCouponCode");
 
-//Header ASCII Art
-const headerText = "Courier Service CLI";
+//Header ASCII Art-- For better aesthetics meaning
+const headerText = process.env.headerText;
 const asciiArt = figlet.textSync(headerText, {
   horizontalLayout: "full",
   verticalLayout: "default",
@@ -18,6 +19,9 @@ const app = async () => {
   switch (typeOfTask) {
     case "getTotalDeliveryCost":
       await getTotalDeliveryCost();
+      break;
+    case "getDeliveryTimeEstimation":
+      await getDeliveryTimeEstimation();
       break;
     case "getAllCouponCodes":
       await getAllCouponCodes();

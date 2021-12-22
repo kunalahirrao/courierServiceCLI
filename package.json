@@ -5,17 +5,20 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./src/index.js",
-    "start": "node ./src/index.js"
+    "start": "node -r dotenv/config ./src/index.js dotenv_config_path=./dev.env",
+    "test": "jest"
   },
   "author": "kunal ahirrao",
   "license": "ISC",
   "devDependencies": {
+    "jest": "^27.4.5",
     "nodemon": "^2.0.15"
   },
   "dependencies": {
     "chalk": "^4.1.2",
     "chalk-animation": "^1.6.0",
     "cli-table3": "^0.6.0",
+    "dotenv": "^10.0.0",
     "figlet": "^1.5.2",
     "gradient-string": "^2.0.0",
     "inquirer": "^8.2.0"

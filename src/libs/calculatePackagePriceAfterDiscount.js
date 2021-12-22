@@ -1,4 +1,6 @@
 const couponCodes = require("../couponCodes.json");
+const baseCostPerKm = process.env.baseCostPerKm || 5;
+const baseCostPerKg = process.env.baseCostPerKg || 10;
 
 async function calculatePackagePriceAfterDiscount({
   pkgId,
@@ -13,16 +15,20 @@ async function calculatePackagePriceAfterDiscount({
     errors.push("Package Id");
   }
   if (!pkgWeightInKg || typeof pkgWeightInKg !== "number") {
-    errors.push("Package weight in Kg");
+    errors.push("weight as no in Kg");
   }
   if (!distanceInKm || typeof distanceInKm !== "number") {
-    errors.push("Distance to destination in Km");
+    errors.push("distance to destination as number in Km");
   }
+
   if (errors.length > 0) {
-    return `${errors.join()}`;
+    return `Please enter valid ${errors.join()}`;
   } else {
+    console.log(baseCostPerKm,baseCostPerKg)
     let originalPrice =
-      baseDeliveryCost + pkgWeightInKg * 10 + distanceInKm * 5;
+      baseDeliveryCost +
+      pkgWeightInKg * baseCostPerKg +
+      distanceInKm * baseCostPerKm;
     let discount = 0;
     let isCouponCode =
       couponCode &&
@@ -30,6 +36,7 @@ async function calculatePackagePriceAfterDiscount({
         return couponCodes.hasOwnProperty(code.toUpperCase());
       });
     if (!isCouponCode) {
+      console.log("No coupon code", originalPrice);
       return {
         originalPrice,
         discount,
@@ -59,8 +66,7 @@ async function getDiscount(
   distanceInKm,
   pkgWeightInKg
 ) {
-  const { min: minWeight, max: maxWeight } =
-    couponCodes[couponCode].weight;
+  const { min: minWeight, max: maxWeight } = couponCodes[couponCode].weight;
   const { min: minDistance, max: maxDistance } =
     couponCodes[couponCode].distance;
   const isValidDistance = await isValid(distanceInKm, minDistance, maxDistance);

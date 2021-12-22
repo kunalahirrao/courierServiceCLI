@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
 
 module.exports = {
-  askTypeOfTask: async () => {
+  askTypeOfTask: () => {
     const tasks = [
       {
         type: "list",
@@ -11,6 +11,10 @@ module.exports = {
           {
             name: "Calculate total delivery cost",
             value: "getTotalDeliveryCost",
+          },
+          {
+            name: "Get Delivery time estimation",
+            value: "getDeliveryTimeEstimation",
           },
           {
             name: "List of Coupon codes",
@@ -186,5 +190,53 @@ module.exports = {
       },
     ];
     return inquirer.prompt(couponQuestions);
+  },
+  askVehicleDetails: () => {
+    const vehicleQuestions = [
+      {
+        type: "input",
+        name: "noOfVehicles",
+        message:
+          "Enter number of vehicles available for delivering the packages",
+        validate: (noOfVehicles) => {
+          if (
+            noOfVehicles.length &&
+            typeof parseInt(noOfVehicles) == "number"
+          ) {
+            return true;
+          } else {
+            return "Please enter number of vehicles available for delivering the packages";
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "maxSpeed",
+        message: "Please enter maximum speed of vehicle",
+        validate: (maxSpeed) => {
+          if (maxSpeed.length && typeof parseInt(maxSpeed) == "number") {
+            return true;
+          } else {
+            return "Please enter maximum speed of vehicle";
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "maxCarryingCapacity",
+        message: "Enter maximum carrying capacity of vehicle",
+        validate: function (maxCarryingCapacity) {
+          if (
+            maxCarryingCapacity.length &&
+            typeof parseInt(maxCarryingCapacity) == "number"
+          ) {
+            return true;
+          } else {
+            return "Please enter maximum carrying capacity of vehicle";
+          }
+        },
+      },
+    ];
+    return inquirer.prompt(vehicleQuestions);
   },
 };

@@ -1,7 +1,7 @@
 const fs = require("fs");
 const couponCodes = require("../couponCodes.json");
 
-function addNewCouponToFile({
+async function addNewCouponToFile({
   couponCode,
   discount,
   minWeight,
