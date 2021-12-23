@@ -14,6 +14,6 @@
 - jest : Used as  testing framework.
 
 #### Flow Chart
-Link to draw.io : ![Flow chart](../master/assets/courierCliFlow.png)
+Link to draw.io : ![Flow chart](../main/assets/courierCliFlow.png)
 
 
