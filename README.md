@@ -14,6 +14,4 @@
 - jest : Used as  testing framework.
 
 #### Flow Chart
-Link to draw.io : https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=courierCliFlow.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1zZPoURUPG9aHC_PBa3mT8-pAmFR6Cmp2%26export%3Ddownload
-
-
+<img src="https://user-images.githubusercontent.com/52235656/147191308-5e8e10e0-e257-4433-9e40-7230c4fab8a7.jpg" width="15%"></img>
