@@ -40,6 +40,13 @@ const getDeliveryTimeEstimation = async () => {
   const { noOfVehicles, maxCarryingCapacity, maxSpeed } =
     await tasks.askVehicleDetails();
   // Calculate package delivery time estimate
+  getDeliveryTimes({    
+    packages: packages,
+    maxSpeed: maxSpeed,
+    maxCarryingCapacity: maxCarryingCapacity,
+    noOfVehicles: noOfVehicles,
+    baseDeliveryCost: baseDeliveryCost,
+  });
   return "Work is in progress";
 };
 
