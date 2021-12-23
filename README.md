@@ -15,3 +15,5 @@
 
 #### Flow Chart
 <img src="https://user-images.githubusercontent.com/52235656/147191308-5e8e10e0-e257-4433-9e40-7230c4fab8a7.jpg" width="15%"></img>
+
+Notes: First do npm i and then npm run start
