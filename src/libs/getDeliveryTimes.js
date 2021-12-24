@@ -1,4 +1,6 @@
-var obj = {};
+var maxShipmentPair = {};
+let maxSum = 0;
+let maxShipment;
 const consignmentDetails = {
   packages: [
     {
@@ -48,46 +50,66 @@ async function getDeliveryTimes(consignmentDetails) {
   const maxCarryingCapacityOfVehicle = consignmentDetails.maxCarryingCapacity;
   const noOfVehicles = consignmentDetails.noOfVehicles;
   const noOfPackages = consignmentDetails.noOfPackages;
-
-  // Packages sorted in Aescending order
-  const sortedPackagesByWeight = packages.sort((a, b) => {
+  // Packages sorted in Descending order
+  let sortedPackagesByWeight = packages.sort((a, b) => {
     return b.pkgWeightInKg - a.pkgWeightInKg;
   });
   // Contains end result
   let possibleConsignment = [];
+  // Each time we substract currentPackageWeightInKg from maxCarryingCapacityOfVehicle which results in
+  let updatedCarryingCapacityOfVehicle = 0;
+  let currentPackageWeightInKg = 0;
+  let nextPackageWeightInKg = 0;
+  let flag = false;
+  let shipment = [];
+  // Storing index of packages which are already placed in possibleConsignment
+  let index = [];
 
-  for (let package of sortedPackagesByWeight) {
-    await checkInPossibleConsignment(package);
-  }
-
-  function singlePackagePush(package) {
-    possibleConsignment.push([package]);
-  }
-
-  async function checkInPossibleConsignment(package) {
-    if (possibleConsignment.length === 0) {
-      possibleConsignment.push([package]);
-      return;
-    } else {
-      let maxSum;
-      let maxShipmentPair;
-      for (let shipment of possibleConsignment) {
-        const shipmentWeightTotal = shipment.reduce((a, c) => {
-          return a + c.pkgWeightInKg;
-        }, 0);
-        const expectedPackageWeight = package.pkgWeightInKg;
-        const sum = shipmentWeightTotal + expectedPackageWeight;
-        if (sum <= 200) {
-          shipment.push(package);
-        } else {
-          singlePackagePush(package);
-          break;
+  for (i = 0; i < sortedPackagesByWeight.length; i++) {
+    if (!index.includes(i)) {
+      flag = false;
+      currentPackageWeightInKg = sortedPackagesByWeight[i].pkgWeightInKg;
+      if (currentPackageWeightInKg === maxCarryingCapacityOfVehicle) {
+        shipment.push(sortedPackagesByWeight[i]);
+        index.push(i);
+      } else if (currentPackageWeightInKg < maxCarryingCapacityOfVehicle) {
+        updatedCarryingCapacityOfVehicle =
+          maxCarryingCapacityOfVehicle - currentPackageWeightInKg;
+        shipment.push(sortedPackagesByWeight[i]);
+        index.push(i);
+        for (
+          j = i + 1;
+          j < sortedPackagesByWeight.length && flag === false;
+          j++
+        ) {
+          if (!index.includes(j)) {
+            nextPackageWeightInKg = sortedPackagesByWeight[j].pkgWeightInKg;
+            if (
+              updatedCarryingCapacityOfVehicle - nextPackageWeightInKg ===
+              0
+            ) {
+              shipment.push(sortedPackagesByWeight[j]);
+              index.push(j);
+              // To come out of loop and to take next weight in line
+              flag = true;
+            } else if (
+              updatedCarryingCapacityOfVehicle - nextPackageWeightInKg >
+              0
+            ) {
+              updatedCarryingCapacityOfVehicle =
+                updatedCarryingCapacityOfVehicle - nextPackageWeightInKg;
+              shipment.push(sortedPackagesByWeight[j]);
+              index.push(j);
+            }
+          }
         }
+        flag = false;
       }
+      possibleConsignment.push(shipment);
+      shipment = [];
     }
   }
-
-  console.log(possibleConsignment);
+  return possibleConsignment;
 }
 
 getDeliveryTimes(consignmentDetails);
