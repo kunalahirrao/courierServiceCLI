@@ -23,8 +23,7 @@ async function calculatePackagePriceAfterDiscount({
 
   if (errors.length > 0) {
     return `Please enter valid ${errors.join()}`;
-  } else {
-    console.log(baseCostPerKm,baseCostPerKg)
+  } else {    
     let originalPrice =
       baseDeliveryCost +
       pkgWeightInKg * baseCostPerKg +
@@ -35,8 +34,7 @@ async function calculatePackagePriceAfterDiscount({
       couponCode.split(",").find((code) => {
         return couponCodes.hasOwnProperty(code.toUpperCase());
       });
-    if (!isCouponCode) {
-      console.log("No coupon code", originalPrice);
+    if (!isCouponCode) {      
       return {
         originalPrice,
         discount,

@@ -47,23 +47,17 @@ async function getDeliveryTimes(
     let maxdistance = 0;
     let element = finalConsignment[j - 1];
     for (i = 1; i <= element.length; i++) {
-      let package = element[i - 1];
-      if (maxdistance < package.distanceInKm) {
-        maxdistance = package.distanceInKm;
+      let pkg = element[i - 1];
+      if (maxdistance < pkg.distanceInKm) {
+        maxdistance = pkg.distanceInKm;
       }
-      shipment.packages.push(package);
-      let value = package.distanceInKm / maxSpeedOfVehicle;
-      package.packageDelTime = Math.trunc(value * 100) / 100;
+      shipment.packages.push(pkg);
+      let packageDelTime = pkg.distanceInKm / maxSpeedOfVehicle;
+      pkg.packageDelTime = Math.trunc(packageDelTime * 100) / 100;
     }
-    shipment["maxDelTime"] = parseFloat(
-      (maxdistance / maxSpeedOfVehicle).toFixed(2)
-    );
-    const half = maxSpeedOfVehicle / 2;
     // The maximum return time means the package which has highest distance to destination
-    shipment["maxReturnTime"] = parseFloat(
-      ((maxdistance / maxSpeedOfVehicle) * 2).toFixed(2)
-    );
-    //  = parseFloat((maxdistance / half).toFixed(2));
+    const maxReturnTime = (maxdistance / maxSpeedOfVehicle) * 2;
+    shipment["maxReturnTime"] = Math.trunc(maxReturnTime * 100) / 100;
     shipment["shipmentId"] = j;
     allShipments.push(shipment);
     shipment = {
@@ -86,9 +80,9 @@ async function getDeliveryTimes(
           ([, vehicleOneReturnTime], [, vehicleTwoReturnTime]) =>
             vehicleOneReturnTime - vehicleTwoReturnTime
         );
-        shipment.packages.forEach((package) => {
-          package.packageDelTime =
-            package.packageDelTime + vehicleWithLowestReturnTime[1];
+        shipment.packages.forEach((pkg) => {
+          pkg.packageDelTime =
+            pkg.packageDelTime + vehicleWithLowestReturnTime[1];
         });
         vehicleobj[vehicleWithLowestReturnTime[0]] =
           vehicleWithLowestReturnTime[1] + shipment.maxReturnTime;
@@ -97,7 +91,20 @@ async function getDeliveryTimes(
     }
     i--;
   }
-  return allShipments;
+  const shipmentPackages = allShipments.map((item) => {
+    return item.packages;
+  });
+  const sortedPackages = shipmentPackages.flat(2).sort((a, b) => {
+    return a.pkgId - b.pkgId;
+  });
+  return sortedPackages.map((pkg) => {
+    return {
+      pkgId: pkg.pkgId,
+      discount: pkg.discount.toFixed(),
+      originalPrice: pkg.originalPrice,
+      packageDelTime: pkg.packageDelTime.toFixed(2),
+    };
+  });
 }
 
 module.exports = getDeliveryTimes;

@@ -56,19 +56,12 @@ const getDeliveryTimeEstimation = async () => {
     noOfVehicles,
     maxSpeedOfVehicle
   );
-  const finalPackages = deliveryTimes.map((item) => {
-    return item.packages;
-  });
-  //  ["Id", "Discount", "Price", "Delivery Time"]
-  const sortedPackages = finalPackages.flat(2).sort((a, b) => {
-    return a.pkgId - b.pkgId;
-  });
-  sortedPackages.forEach((package) => {
+  deliveryTimes.forEach((package) => {
     table.push([
       package.pkgId,
-      package.discount.toFixed(),
+      package.discount,
       package.originalPrice,
-      package.packageDelTime.toFixed(2),
+      package.packageDelTime,
     ]);
   });
   console.log(table.toString());

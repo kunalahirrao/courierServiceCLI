@@ -55,10 +55,10 @@ test("Valid Coupon Code", async () => {
   expect(
     await calculatePackagePriceAfterDiscount({
       pkgId: "1",
-      pkgWeightInKg: 210,
-      distanceInKm: 210,
+      pkgWeightInKg: 120,
+      distanceInKm: 120,
       couponCode: "OFR002",
       baseDeliveryCost: 100,
     })
-  ).toEqual({ originalPrice: 2925, discount: 325, pkgId: "1" });
+  ).toEqual({ originalPrice: 1767, discount: 133, pkgId: "1" });
 });
