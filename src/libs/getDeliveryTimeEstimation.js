@@ -2,6 +2,8 @@ const tasks = require("../tasks");
 const chalk = require("chalk");
 const Table = require("cli-table3");
 const calculatePackagePriceAfterDiscount = require("./calculatePackagePriceAfterDiscount");
+const getPossibleConsignment = require("./getpossibleConsignment");
+const getDeliveryTimes = require("./getDeliveryTimes");
 
 const getDeliveryTimeEstimation = async () => {
   let { baseDeliveryCost, noOfPackages } = await tasks.askBasicDetails();
@@ -30,24 +32,46 @@ const getDeliveryTimeEstimation = async () => {
     });
     packages.push({
       pkgId: package.pkgId,
-      weight: pkgWeightInKg,
-      distance: distanceInKm,
+      pkgWeightInKg: pkgWeightInKg,
+      distanceInKm: distanceInKm,
       couponCode,
+      originalPrice: package.originalPrice,
+      discount: package.discount,
     });
   }
-  //   console.log(packages);
   // Ask questions related to Vehicle
   const { noOfVehicles, maxCarryingCapacity, maxSpeed } =
     await tasks.askVehicleDetails();
   // Calculate package delivery time estimate
-  const possibleConsignment = getDeliveryTimes({
-    packages: packages,
-    maxSpeed: maxSpeed,
-    maxCarryingCapacity: maxCarryingCapacity,
-    noOfVehicles: noOfVehicles,
-    baseDeliveryCost: baseDeliveryCost,
+  const { possibleConsignment, maxSpeedOfVehicle } =
+    await getPossibleConsignment({
+      packages: packages,
+      maxSpeed: maxSpeed,
+      maxCarryingCapacity: maxCarryingCapacity,
+      baseDeliveryCost: baseDeliveryCost,
+    });
+  // Delivery table with optimized shipment delivery
+  const deliveryTimes = await getDeliveryTimes(
+    possibleConsignment,
+    noOfVehicles,
+    maxSpeedOfVehicle
+  );
+  const finalPackages = deliveryTimes.map((item) => {
+    return item.packages;
   });
-  // Delivery table
+  //  ["Id", "Discount", "Price", "Delivery Time"]
+  const sortedPackages = finalPackages.flat(2).sort((a, b) => {
+    return a.pkgId - b.pkgId;
+  });
+  sortedPackages.forEach((package) => {
+    table.push([
+      package.pkgId,
+      package.discount.toFixed(),
+      package.originalPrice,
+      package.packageDelTime.toFixed(2),
+    ]);
+  });
+  console.log(table.toString());
 };
 
 module.exports = getDeliveryTimeEstimation;
